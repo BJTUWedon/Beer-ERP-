@@ -120,7 +120,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'beer',
         'USER': 'root',
-        'PASSWORD': '123456',
+        'PASSWORD': 'wyd980420',
         'HOST': 'localhost',
         'PORT': '3306',
     }
@@ -143,4 +143,3 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
-
