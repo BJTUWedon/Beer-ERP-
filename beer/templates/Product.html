@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="{% static 'css/style.css'%}">
+    <link rel="stylesheet" href="{% static 'css/semantic.css'%}">
+    <script src="{% static 'js/echarts.js'%}"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="left">
+        <div title="Dashboard" class="titleMenu"><a href="/Dashboard" style="color:white" ><strong>New Beer</strong></a></div>
+
+        <div title="Supplier Management" class="menu"><a href="/Supplier" style="color:white" >Supplier Mgt</a></div>
+        <div title="Purchase Management" class="menu"><a href="/Purchase" style="color:white" >Purchase Mgt</a></div>
+        <div title="Material Management" class="menu"><a href="/Material" style="color:white" >Material Mgt</a></div>
+        <div title="Activity Management" class="menu"><a href="/Activity" style="color:white" >Activity Mgt</a></div>
+        <div title="Product Management" style="background-color:#5BA407" class="menu"><a href="/Product" style="color:white" >Product Mgt</a></div>
+        <div title="Orders Management" class="menu"><a href="/Orders" style="color:white" >Orders Mgt</a></div>
+        <div title="Customers Management" class="menu"><a href="/Customers" style="color:white" >Customers Mgt</a></div>
+        <div title="Equipment Management" class="menu"><a href="/Equipment" style="color:white" >Equipment Mgt</a></div>
+        <div title="Warehouse Management" class="menu"><a href="/Warehouse" style="color:white" >Warehouse Mgt</a></div>
+        <div title="Labor Management" class="menu"><a href="/Labor" style="color:white" >Labor Mgt</a></div>
+      </div>
+      <div class="right">
+        <div class="title">
+          Product Information
+        </div>
+        <!-- <div class="search">
+          <div class="searchBox">
+            ID &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+            <div class="ui input">
+              <input type="text" placeholder="Search...">
+            </div>
+          </div>
+          <div class="searchBox" style="margin-left:100px">
+            Category  &nbsp&nbsp&nbsp&nbsp&nbsp
+            <div class="ui input">
+              <input type="text" placeholder="Search...">
+            </div>
+          </div>
+          <div class="searchBox" style="margin-top:20px">
+            Warehouse  &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+            <div class="ui input">
+              <input type="text" placeholder="Search...">
+            </div>
+          </div>
+          <div class="searchBox"><button type="submit" class="ui big green button" style="margin-top:22px;width:200px;margin-left:200px">Search</button></div>
+        </div> -->
+<div id="barchart" style="width:100%; height: 400px;margin-left:auto;margin-right:auto;margin-top:20px;"></div>
+        <div class="overflow" style="overflow:scroll;height:280px;width:100%">
+        <table id="dataTable"class="dataTable" border="1" style="text-align:center">
+          <tr style="font-size:20px;background-color:#E2E3E1;height:50px">
+            <th>ProductID</th>
+            <th>Category</th>
+            <th>Warehouse</th>
+            <th>Surplus</th>
+          </tr>
+        </table>
+      </div>
+
+      </div>
+    </div>
+
+    <script src="{% static 'js/jquery.js'%}"></script>
+    <script type="text/javascript">
+    var value0
+    var value1
+    var value2
+    var value3
+      function getData(){
+      var xhr = new XMLHttpRequest();
+
+      xhr.onreadystatechange = function () {
+      if (xhr.readyState == 4 && xhr.status == 200){
+      var json=JSON.parse(this.responseText);
+      var _json = json.data
+      var tbody = document.getElementById('dataTable');
+      for (var i = 0; i < _json.length; i++){
+          var h = _json[i];
+          var html = "";
+          window["value" + i] = h.Surplus;
+          var _tr = document.createElement('tr');
+          html += "<td class='alt' style='font-size:20px'>" + h.Product_Id + "</td>";
+          html += "<td class='alt' style='font-size:20px'>" + h.Pro_Category + "</td>";
+          html += "<td class='alt' style='font-size:20px'>" + h.Warehouse_id + "</td>";
+          html += "<td id='surplus"+i+"'class='surplus' style='font-size:20px'>" + h.Surplus + "</td>";
+          _tr.innerHTML = html;
+          tbody.appendChild(_tr);
+          }
+          var option2 = {
+              title:{
+                  text:'Product Inventory'
+              },
+              tooltip:{},
+              legend:{
+                  data:['ProductCase']
+              },
+              xAxis:{
+                  data:["Draft Beer","Mixed Beer","Fresh Beer","Pasteurized Beer"],
+              },
+              yAxis:{
+
+              },
+              series:[{
+                  name:'Quantity',
+                  type:'bar',
+                  data:[value0,value1,value2,value3],
+              }]
+          };
+          //初始化echarts实例
+
+          var myChart = echarts.init(document.getElementById('barchart'));
+          // var myChart2 = echarts.init(document.getElementById('linechart'));
+          //使用制定的配置项和数据显示图表
+          myChart.setOption(option2);
+      }
+      }
+      xhr.open("get","/MgtProduct");
+      xhr.setRequestHeader('content-type', 'application/json');
+      xhr.send(null);
+      // myChart2.setOption(option2);
+        }
+        window.onload = getData;
+        setTimeout(
+          function(){
+            var p1 = document.getElementById('surplus0').innerHTML;
+            var p2 = document.getElementById('surplus1').innerHTML;
+            var p3 = document.getElementById('surplus2').innerHTML;
+            var p4 = document.getElementById('surplus3').innerHTML;
+            if (p1<=500){
+              var a = confirm("The surplus of Draft Beer is less than 500, do you want to add a production activity？")
+              if (a == true) {
+                  window.location.href="/Tem_addActivity";
+              }
+              else {
+                  return false
+              };
+              }
+            if (p2<=500){
+              var a = confirm("The surplus of Mixed Beer is less than 500, do you want to add a production activity？")
+              if (a == true) {
+                  window.location.href="/Tem_addActivity";
+              }
+              else {
+                  return false
+              };
+              }
+            if (p3<=500){
+              var a = confirm("The surplus of Fresh Beer is less than 500, do you want to add a production activity？")
+              if (a == true) {
+                  window.location.href="/Tem_addActivity";
+              }
+              else {
+                  return false
+              };
+              }
+            if (p4<=500){
+              var a = confirm("The surplus of Pasteurized Beer is less than 500, do you want to add a production activity？")
+              if (a == true) {
+                  window.location.href="/Tem_addActivity";
+              }
+              else {
+                  return false
+              };
+              }
+          }
+          ,2000);
+    </script>
+  </body>
+</html>

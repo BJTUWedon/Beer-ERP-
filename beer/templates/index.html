@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="{% static 'css/semantic.css'%}">
+  </head>
+  <body style="background-image: url({% static '/image/bk.png'%});background-size:cover; min-width:1000px;  min-height:550px;     height:100%;
+    width:100%;
+    position:absolute;
+    top:0px;
+    left:0px; ">
+<div class="ui massive compact segment" style="position:fixed;width: 400px;top:35%;left:25% ;)">
+<form class="ui form" method="post" action="{% url 'login' %}" enctype="multipart/form-data">
+<div class="field">
+<label>Username:</label>
+<input type="text" name="username"/>
+</div>
+<div class="field">
+<label>Password:</label>
+<input type="password" name="password"/>
+</div>
+<button class="ui primary button" type="submit" style="width:100%">Submit</button>
+</form>
+</div>
+<script src="{% static 'js/jquery.js'%}"></script>
+<script type="text/javascript">
+  {#function submit(){#}
+  {#  username = document.getElementById("username").value;#}
+  {#  password = document.getElementById("password").value;#}
+  {#  console.log(username);#}
+  {#  $.ajax({#}
+  {#              type: "post",#}
+  {#              url: "{% url 'login' %}",#}
+  {#              data: {"username":username, "password":password},#}
+  {#              async: false,#}
+  {#              success:function (data) {#}
+  {#                  if(data.status === 302)#}
+  {#                  location.href = data.url;#}
+  {#                  //console.log(data);#}
+  {#              },#}
+  {#              error: function (XMLHttpRequest, textStatus, errorThrown) {#}
+  {#                  //alert(XMLHttpRequest.status);#}
+  {#                  //alert(XMLHttpRequest.readyState);#}
+  {#                  //alert(textStatus);#}
+  {##}
+  {#              }#}
+  {#          });#}
+  {#}#}
+</script>
+  </body>
+</html>

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="{% static 'css/style.css'%}">
+    <link rel="stylesheet" href="{% static 'css/semantic.css'%}">
+  </head>
+  <body>
+    <div class="main">
+      <div class="left">
+        <div title="Dashboard" class="titleMenu"><a href="/Dashboard" style="color:white" ><strong>New Beer</strong></a></div>
+
+        <div title="Supplier Management" style="background-color:#5BA407" class="menu"><a href="/Supplier" style="color:white" >Supplier Mgt</a></div>
+        <div title="Purchase Management" class="menu"><a href="/Purchase" style="color:white" >Purchase Mgt</a></div>
+        <div title="Material Management" class="menu"><a href="/Material" style="color:white" >Material Mgt</a></div>
+        <div title="Activity Management" class="menu"><a href="/Activity" style="color:white" >Activity Mgt</a></div>
+        <div title="Product Management" class="menu"><a href="/Product" style="color:white" >Product Mgt</a></div>
+        <div title="Orders Management" class="menu"><a href="/Orders" style="color:white" >Orders Mgt</a></div>
+        <div title="Customers Management" class="menu"><a href="/Customers" style="color:white" >Customers Mgt</a></div>
+        <div title="Equipment Management" class="menu"><a href="/Equipment" style="color:white" >Equipment Mgt</a></div>
+        <div title="Warehouse Management" class="menu"><a href="/Warehouse" style="color:white" >Warehouse Mgt</a></div>
+        <div title="Labor Management" class="menu"><a href="/Labor" style="color:white" >Labor Mgt</a></div>
+      </div>
+      <div class="right">
+        <div class="title">
+          Information
+        </div>
+        <form class="search" enctype="multipart/form-data">
+          <div class="searchBox">
+            Supplier ID &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+            <div class="ui input">
+              <input type="text" placeholder="Search..." id="Supplier_Id">
+            </div>
+          </div>
+          <div class="searchBox" style="margin-left:100px">
+            Supplier Name  &nbsp&nbsp
+            <div class="ui input">
+              <input type="text" placeholder="Search..." id="Supplier_Name">
+            </div>
+          </div>
+          <div class="searchBox">
+            Material ID  &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+            <div class="ui input">
+              <input type="text" placeholder="Search..." id="Material_id">
+            </div>
+          </div>
+          <div class="searchBox" style="margin-left:100px">
+            Liaison Name  &nbsp&nbsp&nbsp&nbsp&nbsp
+            <div class="ui input">
+              <input type="text" placeholder="Search..." id="Liaison_Name">
+            </div>
+          </div>
+          <div class="searchBox">
+            Liaison Number &nbsp
+            <div class="ui input">
+              <input type="text" placeholder="Search..." id="Liaison_Number">
+            </div>
+          </div>
+          <div class="searchBox"><button type="button" onclick="search()" class="ui big green button" style="margin-top:2px;width:200px;margin-left:200px">Search</button></div>
+        </form>
+        <div class="overflow" style="overflow:scroll;height:480px;width:100%">
+        <table id= "dataTable"class="dataTable" border="1" style="text-align:center">
+          <tr style="font-size:20px;background-color:#E2E3E1;height:50px">
+            <th>Supplier ID</th>
+            <th>Supplier Name</th>
+            <th>Material ID</th>
+            <th>Liaison Name</th>
+            <th>Liaison Number</th>
+          </tr>
+        </table>
+        </div>
+      </div>
+    </div>
+    <script src="{% static 'js/jquery.js'%}"></script>
+    <script type="text/javascript">
+      function addURLParam(url,name,value){
+        url += (url.indexOf("?") == -1 ? "?":"&");
+        url += encodeURIComponent(name) + "=" + encodeURIComponent(value);
+        return url;
+      }
+      function getData(){
+      var xhr = new XMLHttpRequest();
+
+      xhr.onreadystatechange = function () {
+      if (xhr.readyState == 4 && xhr.status == 200){
+      var json=JSON.parse(this.responseText);
+      var _json = json.data
+      var tbody = document.getElementById('dataTable');
+      for (var i = 0; i < _json.length; i++){
+          var h = _json[i];
+          var html = "";
+          var _tr = document.createElement('tr');
+          _tr.className = 'rows';
+          html += "<td class='alt' style='font-size:20px'>" + h.Supplier_Id + "</td>";
+          html += "<td class='alt' style='font-size:20px'>" + h.Supplier_Name + "</td>";
+          html += "<td class='alt' style='font-size:20px'>" + h.Material_id + "</td>";
+          html += "<td class='alt' style='font-size:20px'>" + h.Liaison_Name + "</td>";
+          html += "<td class='alt' style='font-size:20px'>" + h.Liaison_Number + "</td>";
+          _tr.innerHTML = html;
+          tbody.appendChild(_tr);
+          }
+      }
+      }
+      xhr.open("get","/SupplierMgt");
+      xhr.setRequestHeader('content-type', 'application/json');
+      xhr.send(null);
+        }
+        window.onload = getData;
+
+        function search(){
+          var xhr = new XMLHttpRequest();
+          $(function(){
+            $(".rows").remove();
+        });
+          xhr.onreadystatechange = function () {
+          if (xhr.readyState == 4 && xhr.status == 200){
+          var json=JSON.parse(this.responseText);
+          var _json = json.data
+          var tbody = document.getElementById('dataTable');
+          for (var i = 0; i < _json.length; i++){
+              var h = _json[i];
+              var html = "";
+              var _tr = document.createElement('tr');
+              _tr.className='rows';
+              html += "<td class='alt' style='font-size:20px'>" + h.Supplier_Id + "</td>";
+              html += "<td class='alt' style='font-size:20px'>" + h.Supplier_Name + "</td>";
+              html += "<td class='alt' style='font-size:20px'>" + h.Material_id + "</td>";
+              html += "<td class='alt' style='font-size:20px'>" + h.Liaison_Name + "</td>";
+              html += "<td class='alt' style='font-size:20px'>" + h.Liaison_Number + "</td>";
+              _tr.innerHTML = html;
+              tbody.appendChild(_tr);
+              }
+          }
+          }
+          var value1 = document.getElementById("Supplier_Id").value;
+          var value2 = document.getElementById("Supplier_Name").value;
+          var value3 = document.getElementById("Material_id").value;
+          var value4 = document.getElementById("Liaison_Name").value;
+          var value5 = document.getElementById("Liaison_Number").value;
+          var url = "/getSupplier"
+          url = addURLParam(url,"Supplier_Id",value1)
+          url = addURLParam(url,"Supplier_Name",value2)
+          url = addURLParam(url,"Material_id",value3)
+          url = addURLParam(url,"Liaison_Name",value4)
+          url = addURLParam(url,"Liaison_Number",value5)
+          xhr.open("get",url);
+          xhr.setRequestHeader('content-type', 'application/json');
+          xhr.send(null);
+        }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="{% static 'css/style.css'%}">
+    <link rel="stylesheet" href="{% static 'css/semantic.css'%}">
+  </head>
+  <body>
+    <div class="main">
+      <div class="left">
+        <div title="Dashboard" class="titleMenu"><a href="/Dashboard" style="color:white" ><strong>New Beer</strong></a></div>
+
+        <div title="Supplier Management" class="menu"><a href="/Supplier" style="color:white" >Supplier Mgt</a></div>
+        <div title="Purchase Management" class="menu"><a href="/Purchase" style="color:white" >Purchase Mgt</a></div>
+        <div title="Material Management" class="menu"><a href="/Material" style="color:white" >Material Mgt</a></div>
+        <div title="Activity Management" class="menu"><a href="/Activity" style="color:white" >Activity Mgt</a></div>
+        <div title="Product Management" class="menu"><a href="/Product" style="color:white" >Product Mgt</a></div>
+        <div title="Orders Management" class="menu"><a href="/Orders" style="color:white" >Orders Mgt</a></div>
+        <div title="Customers Management" class="menu"><a href="/Customers" style="color:white" >Customers Mgt</a></div>
+        <div title="Equipment Management" class="menu"><a href="/Equipment" style="color:white" >Equipment Mgt</a></div>
+        <div title="Warehouse Management" style="background-color:#5BA407" class="menu"><a href="/Warehouse" style="color:white" >Warehouse Mgt</a></div>
+        <div title="Labor Management" class="menu"><a href="/Labor" style="color:white" >Labor Mgt</a></div>
+      </div>
+      <div class="right">
+        <div class="title">
+          Warehouse Information
+        </div>
+        <div class="search">
+          <div class="searchBox">
+            ID &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+            <div class="ui input">
+              <input type="text" placeholder="Search..." id="Warehouse_Id">
+            </div>
+          </div>
+          <div class="searchBox" style="margin-left:100px">
+            Storage Type &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+            <div class="ui input">
+              <input type="text" placeholder="Search..." id="Storage_Type">
+            </div>
+            <!-- <select class="ui input" id="Storage_Type" style="width:200px;height:45px">
+              <option value=""></option>
+              <option value="Material">Material</option>
+              <option value="Equipment">Equipment</option>
+              <option value="Product">Product</option>
+            </select> -->
+          </div>
+          <div class="searchBox">
+          Location  &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+            <!-- <div class="ui input">
+              <input type="text" placeholder="Search..." id="Warehouse_Location">
+            </div> -->
+            <select class="ui input" id="Warehouse_Location" style="width:200px;height:45px">
+              <option value=""></option>
+              <option value="X area">X area</option>
+              <option value="Y area">Y area</option>
+              <option value="Z area">Z area</option>
+            </select>
+          </div>
+          <div class="searchBox" style="margin-left:100px">
+            PeopleInCharge  &nbsp&nbsp&nbsp&nbsp&nbsp
+            <div class="ui input">
+              <input type="text" placeholder="Search..." id="PeopleInCharge_id">
+            </div>
+          </div>
+          <div class="searchBox"><button type="button" onclick="search()" class="ui big green button" style="margin-top:2px;width:200px;margin-left:700px">Search</button></div>
+        </div>
+        <div class="overflow" style="overflow:scroll;height:480px;width:100%">
+        <table id="dataTable"class="dataTable" border="1" style="text-align:center">
+          <tr style="font-size:20px;background-color:#E2E3E1;height:50px">
+            <th>ID</th>
+            <th>Storage Type</th>
+            <th>Location</th>
+            <th>PeopleInCharge</th>
+          </tr>
+        </table>
+      </div>
+      </div>
+    </div>
+    <script src="{% static 'js/jquery.js'%}"></script>
+    <script type="text/javascript">
+      function addURLParam(url,name,value){
+        url += (url.indexOf("?") == -1 ? "?":"&");
+        url += encodeURIComponent(name) + "=" + encodeURIComponent(value);
+        return url;
+      }
+      function getData(){
+      var xhr = new XMLHttpRequest();
+
+      xhr.onreadystatechange = function () {
+      if (xhr.readyState == 4 && xhr.status == 200){
+      var json=JSON.parse(this.responseText);
+      var _json = json.data
+      var tbody = document.getElementById('dataTable');
+      for (var i = 0; i < _json.length; i++){
+          var h = _json[i];
+          var html = "";
+          var _tr = document.createElement('tr');
+          _tr.className='row';
+          html += "<td class='alt' style='font-size:20px'>" + h.Warehouse_Id + "</td>";
+          html += "<td class='alt' style='font-size:20px'>" + h.Storage_Type + "</td>";
+          html += "<td class='alt' style='font-size:20px'>" + h.Warehouse_Location + "</td>";
+          html += "<td class='alt' style='font-size:20px'>" + h.PeopleInCharge_id + "</td>";
+          _tr.innerHTML = html;
+          tbody.appendChild(_tr);
+          }
+      }
+      }
+      xhr.open("get","/MgtWarehouse");
+      xhr.setRequestHeader('content-type', 'application/json');
+      xhr.send(null);
+        }
+        window.onload = getData;
+
+        function search(){
+          var xhr = new XMLHttpRequest();
+          $(function(){
+            $(".row").remove();
+        });
+          xhr.onreadystatechange = function () {
+          if (xhr.readyState == 4 && xhr.status == 200){
+          var json=JSON.parse(this.responseText);
+          var _json = json.data
+          var tbody = document.getElementById('dataTable');
+          for (var i = 0; i < _json.length; i++){
+              var h = _json[i];
+              var html = "";
+              var _tr = document.createElement('tr');
+              _tr.className='row';
+              html += "<td class='alt' style='font-size:20px'>" + h.Warehouse_Id + "</td>";
+              html += "<td class='alt' style='font-size:20px'>" + h.Storage_Type + "</td>";
+              html += "<td class='alt' style='font-size:20px'>" + h.Warehouse_Location + "</td>";
+              html += "<td class='alt' style='font-size:20px'>" + h.PeopleInCharge_id + "</td>";
+              _tr.innerHTML = html;
+              tbody.appendChild(_tr);
+              }
+          }
+          }
+          var value1 = document.getElementById("Warehouse_Id").value;
+          var value2 = document.getElementById("Storage_Type").value;
+          var value3 = document.getElementById("Warehouse_Location").value;
+          var value4 = document.getElementById("PeopleInCharge_id").value;
+          var url = "/getWarehouse"
+          url = addURLParam(url,"Warehouse_Id",value1)
+          url = addURLParam(url,"Storage_Type",value2)
+          url = addURLParam(url,"Warehouse_Location",value3)
+          url = addURLParam(url,"PeopleInCharge_id",value4)
+          xhr.open("get",url);
+          xhr.setRequestHeader('content-type', 'application/json');
+          xhr.send(null);
+        }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="{% static 'css/style.css'%}">
+    <link rel="stylesheet" href="{% static 'css/semantic.css'%}">
+  </head>
+  <body>
+    <div class="main">
+      <div class="left">
+        <div title="Dashboard" class="titleMenu"><a href="/Dashboard" style="color:white" ><strong>New Beer</strong></a></div>
+
+        <div title="Supplier Management" class="menu"><a href="/Supplier" style="color:white" >Supplier Mgt</a></div>
+        <div title="Purchase Management" class="menu"><a href="/Purchase" style="color:white" >Purchase Mgt</a></div>
+        <div title="Material Management" class="menu"><a href="/Material" style="color:white" >Material Mgt</a></div>
+        <div title="Activity Management" class="menu"><a href="/Activity" style="color:white" >Activity Mgt</a></div>
+        <div title="Product Management" class="menu"><a href="/Product" style="color:white" >Product Mgt</a></div>
+        <div title="Orders Management" style="background-color:#5BA407" class="menu"><a href="/Orders" style="color:white" >Orders Mgt</a></div>
+        <div title="Customers Management" class="menu"><a href="/Customers" style="color:white" >Customers Mgt</a></div>
+        <div title="Equipment Management" class="menu"><a href="/Equipment" style="color:white" >Equipment Mgt</a></div>
+        <div title="Warehouse Management" class="menu"><a href="/Warehouse" style="color:white" >Warehouse Mgt</a></div>
+        <div title="Labor Management" class="menu"><a href="/Labor" style="color:white" >Labor Mgt</a></div>
+      </div>
+      <div class="right">
+        <div class="title" style="float:left;border:0">
+          Orders History Records
+        </div>
+        <div class="ui big blue button" style="float:right;margin-right:50px;margin-top:40px" id="add">Add Order</div>
+        <div class="diliver" style="border-bottom: 3px solid black;margin-top:100px"></div>
+        <div class="search">
+          <div class="searchBox">
+            Order ID &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+            <div class="ui input">
+              <input type="text" placeholder="Search..." id="Order_Id">
+            </div>
+          </div>
+          <div class="searchBox" style="margin-left:100px">
+            Customer ID &nbsp&nbsp
+            <div class="ui input">
+              <input type="text" placeholder="Search..." id="Customer_id">
+            </div>
+          </div>
+          <div class="searchBox">
+            Product ID  &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+            <div class="ui input">
+              <input type="text" placeholder="Search..." id="Product_id">
+            </div>
+          </div>
+          <div class="searchBox" style="margin-left:100px">
+            Staff ID  &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+            <div class="ui input">
+              <input type="text" placeholder="Search..." id="ResponsibleMan_id">
+            </div>
+          </div>
+          <div class="searchBox"><button type="button" onclick="search()" class="ui big green button" style="margin-top:2px;width:200px;margin-left:700px">Search</button></div>
+        </div>
+        <div class="overflow" style="overflow:scroll;height:480px;width:100%">
+        <table id="dataTable"class="dataTable" border="1" style="text-align:center">
+          <tr style="font-size:20px;background-color:#E2E3E1;height:50px">
+            <th>OrderID</th>
+            <th>CustomerID</th>
+            <th>OrderDate</th>
+            <th>ProductID</th>
+            <th>ProductCase</th>
+            <th>Description</th>
+            <th>DeliveryDate</th>
+            <th>Staff</th>
+          </tr>
+        </table>
+      </div>
+      </div>
+    </div>
+    <script src="{% static 'js/jquery.js'%}"></script>
+    <script type="text/javascript">
+    function addURLParam(url,name,value){
+      url += (url.indexOf("?") == -1 ? "?":"&");
+      url += encodeURIComponent(name) + "=" + encodeURIComponent(value);
+      return url;
+    }
+      function getData(){
+      var xhr = new XMLHttpRequest();
+
+      xhr.onreadystatechange = function () {
+      if (xhr.readyState == 4 && xhr.status == 200){
+      var json=JSON.parse(this.responseText);
+      var _json = json.data
+      var tbody = document.getElementById('dataTable');
+      for (var i = 0; i < _json.length; i++){
+          var h = _json[i];
+          var html = "";
+          var _tr = document.createElement('tr');
+          _tr.className='row';
+          html += "<td class='alt' style='font-size:20px'>" + h.Order_Id + "</td>";
+          html += "<td class='alt' style='font-size:20px'>" + h.Customer_id + "</td>";
+          html += "<td class='alt' style='font-size:20px'>" + h.Order_Date + "</td>";
+          html += "<td class='alt' style='font-size:20px'>" + h.Product_id + "</td>";
+          html += "<td class='alt' style='font-size:20px'>" + h.Product_Case + "</td>";
+          html += "<td class='alt' style='font-size:20px'>" + h.Description + "</td>";
+          html += "<td class='alt' style='font-size:20px'>" + h.Delivery_Date + "</td>";
+          html += "<td class='alt' style='font-size:20px'>" + h.ResponsibleMan_id + "</td>";
+          _tr.innerHTML = html;
+          tbody.appendChild(_tr);
+          }
+      }
+      }
+      xhr.open("get","/MgtOrders");
+      xhr.setRequestHeader('content-type', 'application/json');
+      xhr.send(null);
+        }
+        window.onload = getData;
+
+        function search(){
+          var xhr = new XMLHttpRequest();
+          $(function(){
+            $(".row").remove();
+        });
+          xhr.onreadystatechange = function () {
+          if (xhr.readyState == 4 && xhr.status == 200){
+          var json=JSON.parse(this.responseText);
+          var _json = json.data
+          var tbody = document.getElementById('dataTable');
+          for (var i = 0; i < _json.length; i++){
+              var h = _json[i];
+              var html = "";
+              var _tr = document.createElement('tr');
+              _tr.className='row';
+              html += "<td class='alt' style='font-size:20px'>" + h.Order_Id + "</td>";
+              html += "<td class='alt' style='font-size:20px'>" + h.Customer_id + "</td>";
+              html += "<td class='alt' style='font-size:20px'>" + h.Order_Date + "</td>";
+              html += "<td class='alt' style='font-size:20px'>" + h.Product_id + "</td>";
+              html += "<td class='alt' style='font-size:20px'>" + h.Product_Case + "</td>";
+              html += "<td class='alt' style='font-size:20px'>" + h.Description + "</td>";
+              html += "<td class='alt' style='font-size:20px'>" + h.Delivery_Date + "</td>";
+              html += "<td class='alt' style='font-size:20px'>" + h.ResponsibleMan_id + "</td>";
+              _tr.innerHTML = html;
+              tbody.appendChild(_tr);
+              }
+          }
+          }
+          var value1 = document.getElementById("Order_Id").value;
+          var value2 = document.getElementById("Customer_id").value;
+          var value3 = document.getElementById("Product_id").value;
+          var value4 = document.getElementById("ResponsibleMan_id").value;
+          var url = "/getOrder"
+          url = addURLParam(url,"Order_Id",value1)
+          url = addURLParam(url,"Customer_id",value2)
+          url = addURLParam(url,"Product_id",value3)
+          url = addURLParam(url,"ResponsibleMan_id",value4)
+          xhr.open("get",url);
+          xhr.setRequestHeader('content-type', 'application/json');
+          xhr.send(null);
+        }
+        $(document).ready(function(){
+        $('#add').click(function () {
+           window.location.href="/Tem_addOrder";//跳转
+       });
+    });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,39 @@
+.main{
+	height:800px;width:1500px;background-color:white;margin-top:70px;margin-right: auto;margin-left: auto;border:2px solid black;
+}
+.left{
+	height: 100%;width: 20%;background: #1B221B;float: left;
+}
+.right{
+	height: 100%;width: 80%;float: left;
+}
+.menu{
+	color: white;text-align: center;font-size: 25px;padding: 25px
+}
+/* .menu:hover{
+	background-color: #5BA407
+} */
+.titleMenu{
+	color: white;text-align: center;font-size: 40px;padding: 35px
+}
+.title{
+	border-bottom: 3px solid black;font-size: 36px;margin-top: 40px;padding: 20px;width: 50%;
+}
+.searchBox{
+	width: 40%;float: left;font-size: 30px;padding: 10px;margin-left: 40px;text-align: left;
+}
+.searchBox span{
+	width:250px;float: left;
+}
+.searchBox input{
+	margin-left: 20px;float: left;margin-top: 5px;width:200px
+}
+.dataTable{
+	width: 100%;
+}
+td.alt{
+	font-size:30px
+}
+.ui input{
+	height: 50px;
+}

@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="{% static 'css/style.css'%}">
+    <link rel="stylesheet" href="{% static 'css/semantic.css'%}">
+    <script src="{% static 'js/echarts.js'%}"></script>
+  </head>
+  <style media="screen">
+    a:hover
+{
+background-color:#5BA407;
+}
+  </style>
+  <body>
+    <div class="main">
+      <div class="left">
+        <div title="Dashboard" class="titleMenu"><a href="/Dashboard" style="color:white" ><strong>New Beer</strong></a></div>
+        <div title="Supplier Management" class="menu"><a href="/Supplier" style="color:white" >Supplier Mgt</a></div>
+        <div title="Purchase Management" class="menu"><a href="/Purchase" style="color:white" >Purchase Mgt</a></div>
+        <div title="Material Management" class="menu"><a href="/Material" style="color:white" >Material Mgt</a></div>
+        <div title="Activity Management" class="menu"><a href="/Activity" style="color:white" >Activity Mgt</a></div>
+        <div title="Product Management" class="menu"><a href="/Product" style="color:white" >Product Mgt</a></div>
+        <div title="Orders Management" class="menu"><a href="/Orders" style="color:white" >Orders Mgt</a></div>
+        <div title="Customers Management" class="menu"><a href="/Customers" style="color:white" >Customers Mgt</a></div>
+        <div title="Equipment Management" class="menu"><a href="/Equipment" style="color:white" >Equipment Mgt</a></div>
+        <div title="Warehouse Management" class="menu"><a href="/Warehouse" style="color:white" >Warehouse Mgt</a></div>
+        <div title="Labor Management" class="menu"><a href="/Labor" style="color:white" >Labor Mgt</a></div>
+      </div>
+      <div class="right">
+
+        <!-- <div id="linechart" style="width:800px; height: 400px;"></div> -->
+      <h style="font-size:50px;margin-left:40%;line-height:70px">Dashboard</h>
+<div class="ui four column grid" style="margin:10px">
+  <div class="column">
+    <div class="ui card" style="background-color:#99CC99;margin-left:auto;margin-right:auto">
+        <div class="content">
+          <div class="center aligned header" style="font-size:30px;color:white">Supplier Num</div>
+          <div class="center aligned description"style="margin:40px;">
+            <h1 class="text1"style="color:white;">5123</h1>
+          </div>
+        </div>
+</div>
+</div>
+<div class="column">
+    <div class="ui card" style="margin-left:auto;margin-right:auto;background-color:#009966">
+      <div class="content">
+        <div class="center aligned header"style="font-size:30px;color:white">Product Type</div>
+        <div class="center aligned description" style="margin:40px">
+          <h1 class="text2"style="color:grey;color:white">3123</h1>
+        </div>
+      </div>
+</div>
+</div>
+<div class="column">
+    <div class="ui card" style="margin-left:auto;margin-right:auto;background-color:#99CC99">
+      <div class="content">
+        <div class="center aligned header"style="font-size:30px;color:white">Materia Type</div>
+        <div class="center aligned description"style="margin:40px">
+          <h1 class="text3"style="color:white">5232</h1>
+        </div>
+      </div>
+</div>
+</div>
+<div class="column">
+    <div class="ui card" style="margin-left:auto;margin-right:auto;;background-color:#009966">
+      <div class="content">
+        <div class="center aligned header"style="font-size:30px;color:white">Warehouse Num</div>
+        <div class="center aligned description"style="margin:40px">
+          <h1 class="text4"style="color:white">2131</h1>
+        </div>
+      </div>
+</div>
+</div>
+</div>
+      <div id="piechart" style="width:400px; height: 450px;margin-top:50px;margin-left:80px;float:left"></div>
+      <div id="barchart" style="width:500px; height: 600px;margin-top:50px;margin-right: 40px;float:right"></div>
+    </div>
+
+  </body>
+  <script src="{% static 'js/jquery.js'%}"></script>
+  <script type="text/javascript">
+  var value0
+  var value1
+  var value2
+  var value3
+  var data0
+  var data1
+  var data2
+  var data3
+  var data4
+  var data5
+  var data6
+  var data7
+  var data8
+  var data9
+  function getData(){
+  var xhr = new XMLHttpRequest();
+
+  xhr.onreadystatechange = function (win) {
+  if (xhr.readyState == 4 && xhr.status == 200){
+  var json=JSON.parse(this.responseText);
+  var SupplierNum = json.SupplierNum
+  var ProductNum = json.ProductNum
+  var MaterialNum = json.MaterialNum
+  var WarehouseNum = json.WarehouseNum
+  var h1= document.getElementsByClassName("text1")[0];
+  h1.innerHTML = SupplierNum;
+  var h2= document.getElementsByClassName("text2")[0];
+  h2.innerHTML = ProductNum;
+  var h3= document.getElementsByClassName("text3")[0];
+  h3.innerHTML = MaterialNum;
+  var h4= document.getElementsByClassName("text4")[0];
+  h4.innerHTML = WarehouseNum;
+  var _list = json.Surplus
+  var _json = json.Count
+  for (var i = 0; i < _list.length; i++){
+      var h = _list[i];
+       window["data" + i] = h
+     }
+  for (var i = 0; i < _json.length; i++){
+      var h = _json[i];
+       window["value" + i] = h
+      // var 'value' + str(i) = h.Surplus
+      // var value+i=h.Surplus
+      // win.name=name
+      console.log(value0)
+      }
+      // var option1 = {
+      //     title:{
+      //         text:'Material Inventory'
+      //     },
+      //     tooltip:{},
+      //     legend:{
+      //         data:['Material Name']
+      //     },
+      //     xAxis:{
+      //         data:["Barley","Oxidation of Raw Water","Maize","Wheat","Ferment Powder","Malt","Yeast","Hops","Brewing Water"]
+      //     },
+      //     yAxis:{
+      //
+      //     },
+      //     series:[{
+      //         name:'Quantity',
+      //         type:'bar',
+      //         data:[value0,value1,value2,value3,value4,value5,value6,value7,value8,value9]
+      //     }]
+      // };
+      option1 = {
+          title : {
+              text: 'Order Sales',
+              x:'center'
+          },
+          tooltip : {
+              trigger: 'item',
+              formatter: "{a} <br/>{b} : {c} ({d}%)"
+          },
+          toolbox: {
+              show : false,
+              feature : {
+                  mark : {show: true},
+                  dataView : {show: true, readOnly: false},
+                  magicType : {
+                      show: true,
+                      type: ['pie', 'funnel'],
+                      option: {
+                          funnel: {
+                              x: '25%',
+                              width: '50%',
+                              funnelAlign: 'left',
+                              max: 1548
+                          }
+                      }
+                  },
+                  // restore : {show: true},
+                  // saveAsImage : {show: true}
+              }
+          },
+          calculable : true,
+          series : [
+              {
+                  name:'Percent',
+                  type:'pie',
+                  radius : '55%',
+                  center: ['50%', '42%'],
+                  data:[
+                      {value:value0, name:'Draft Beer'},
+                      {value:value1, name:'Mixed Beer'},
+                      {value:value2, name:'Fresh Beer'},
+                      {value:value3, name:'Pasteurized Beer'},
+                  ]
+              }
+          ]
+      };
+      var option2 = {
+          title:{
+              text:'Material Inventory'
+          },
+          tooltip:{},
+          legend:{
+              data:['Surplus']
+          },
+          xAxis:{
+              data:["Barley","Oxidation of Raw Water","Maize","Wheat","Ferment Powder","Malt","Yeast","Hops","Brewing Water"],
+          },
+          yAxis:{
+
+          },
+          series:[{
+              name:'Quantity',
+              type:'bar',
+              data:[data0,data1,data2,data3,data4,data5,data6,data7,data8,data9],
+              color:'#5F9EA0',
+          }]
+      };
+      // var option2 = {
+      //     title:{
+      //         text:'Order Percent'
+      //     },
+      //     tooltip:{},
+      //     legend:{
+      //         data:['ProductCase']
+      //     },
+      //     xAxis:{
+      //         data:["Draft Beer","Mixed Beer","Fresh Beer","Pasteurized Beer"],
+      //     },
+      //     yAxis:{
+      //
+      //     },
+      //     series:[{
+      //         name:'Quantity',
+      //         type:'pie',
+      //         data:[value0,value1,value2,value3],
+      //     }]
+      // };
+      //初始化echarts实例
+
+      var myChart1 = echarts.init(document.getElementById('piechart'));
+      var myChart = echarts.init(document.getElementById('barchart'));
+      // var myChart2 = echarts.init(document.getElementById('linechart'));
+      //使用制定的配置项和数据显示图表
+      myChart.setOption(option1);
+      myChart1.setOption(option2);
+      // myChart2.setOption(option2);
+  }
+  }
+
+  xhr.open("get","/getDashboard");
+  xhr.setRequestHeader('content-type', 'application/json');
+  xhr.send(null);
+    }
+  window.onload = getData;
+        //指定图标的配置和数据
+
+
+    </script>
+</html>

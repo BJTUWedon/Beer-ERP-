@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="{% static 'css/style.css'%}">
+    <link rel="stylesheet" href="{% static 'css/semantic.css'%}">
+  </head>
+  <body>
+    <div class="main">
+      <div class="left">
+        <div title="Dashboard" class="titleMenu"><a href="/Dashboard" style="color:white" ><strong>New Beer</strong></a></div>
+
+        <div title="Supplier Management" class="menu"><a href="/Supplier" style="color:white" >Supplier Mgt</a></div>
+        <div title="Purchase Management" class="menu"><a href="/Purchase" style="color:white" >Purchase Mgt</a></div>
+        <div title="Material Management" class="menu"><a href="/Material" style="color:white" >Material Mgt</a></div>
+        <div title="Activity Management" style="background-color:#5BA407"class="menu"><a href="/Activity" style="color:white" >Activity Mgt</a></div>
+        <div title="Product Management" class="menu"><a href="/Product" style="color:white" >Product Mgt</a></div>
+        <div title="Orders Management" class="menu"><a href="/Orders" style="color:white" >Orders Mgt</a></div>
+        <div title="Customers Management" class="menu"><a href="/Customers" style="color:white" >Customers Mgt</a></div>
+        <div title="Equipment Management" class="menu"><a href="/Equipment" style="color:white" >Equipment Mgt</a></div>
+        <div title="Warehouse Management" class="menu"><a href="/Warehouse" style="color:white" >Warehouse Mgt</a></div>
+        <div title="Labor Management" class="menu"><a href="/Labor" style="color:white" >Labor Mgt</a></div>
+      </div>
+      <div class="right">
+        <div class="title">
+          Add New Activity Record
+        </div>
+        <form class="ui form"  style="margin-left:300px;margin-top:60px;font-size:25px" method="post" action="{% url 'addActivity' %}" enctype="multipart/form-data">
+          <div class="inline field">
+            <label style="width:250px">Product ID</label>
+            <input type="text" name="Product_id" >
+          </div>
+          <div class="inline field">
+            <label style="width:250px">ActResponStaff ID</label>
+            <input type="text" name="ActResponStaff_id">
+          </div>
+          <div class="inline field">
+            <label style="width:250px">Quantity</label>
+            <input type="text" name="Act_Quantity">
+          </div>
+          <div class="inline field">
+            <label style="width:250px">Warehouse ID</label>
+            <input type="text" name="Warehouse_id">
+          </div>
+          <button id="add" class="ui big button" style="margin-left:100px;margin-top:30px" type="button">
+            Cancel
+          </button>
+          <button class="ui big primary button" style="margin-left:200px" type="submit">
+            Submit
+          </button>
+        </form>
+      </div>
+    </div>
+    <script src="{% static 'js/jquery.js'%}"></script>
+    <script type="text/javascript">
+      $('#add').click(function () {
+         window.location.href="/Activity";//跳转
+     });
+    </script>
+  </body>
+</html>
