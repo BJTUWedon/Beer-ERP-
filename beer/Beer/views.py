@@ -68,7 +68,7 @@ def login(request):
                 # 密码长度验证
                 # 更多的其它验证.....
                 try:
-                    user = Administrators.objects.get(Admin_Username=username)
+                    user = administrators.objects.get(Admin_Username=username)
                     if user.Admin_Password == password:
                         message = "登陆成功！"
                         success = True
@@ -97,14 +97,14 @@ def register(request):
             username = json.loads(request.body)['username']
             password = json.loads(request.body)['password']
             WorkNum = json.loads(request.body)['worknum']
-            same_name_user = Administrators.objects.filter(Admin_Username=username)
+            same_name_user = administrators.objects.filter(Admin_Username=username)
             if same_name_user:  # 用户名唯一
                 Data = '用户已经存在，请重新选择用户名！'
                 success = False
                 return JsonResponse({"success": success, "data": Data})
-            worknum_check = Administrators.objects.filter(WorkNum_id = WorkNum)
+            worknum_check = administrators.objects.filter(WorkNum_id = WorkNum)
             if worknum_check:  # 用户名唯一
-                Administrators.objects.create(Admin_Username=username, Admin_Password=hash_code(password), WorkNum_id = WorkNum)
+                administrators.objects.create(Admin_Username=username, Admin_Password=hash_code(password), WorkNum_id = WorkNum)
                 message = "注册成功"
                 success = True
                 return JsonResponse({"success": success, "data": Data})
@@ -119,7 +119,7 @@ def register(request):
 
 def Supplier_Mgt(request):
     if request.method == "GET":
-        SuppliersInfo = Suppliers.objects.all()
+        SuppliersInfo = suppliers.objects.all()
         Data = []
         try:
             success = True
@@ -152,7 +152,7 @@ def Supplier_Mgt(request):
 
 def Purchase_Mgt(request):
     if request.method == "GET":
-        PurchaseInfo = Procurement.objects.all().order_by('-Purchase_Id')
+        PurchaseInfo = procurement.objects.all().order_by('-Purchase_Id')
         Data = []
         try:
             success = True
@@ -195,12 +195,12 @@ def addPurchase(request):
             Supplier_id = request.POST['supplierid']
             Purchase_Quantity = request.POST['quantity']
             ResponsibleStaff_id = request.POST['staff']
-            Procurement.objects.create(Material_id=Material_id, Supplier_id=Supplier_id,Purchase_Date=datetime.datetime.now(),Purchase_Quantity=Purchase_Quantity,ResponsibleStaff_id=ResponsibleStaff_id)
-            MaterialInfo = Material_Inventory.objects.get(Material_Id=Material_id)
+            procurement.objects.create(Material_id=Material_id, Supplier_id=Supplier_id,Purchase_Date=datetime.datetime.now(),Purchase_Quantity=Purchase_Quantity,ResponsibleStaff_id=ResponsibleStaff_id)
+            MaterialInfo = material_inventory.objects.get(Material_Id=Material_id)
             Quantity = filter(str.isdigit, Purchase_Quantity.encode("utf-8"))
             Qua = int(Quantity)
             Material_Suplus = Qua+MaterialInfo.Material_Surplus
-            Material_Inventory.objects.filter(Material_Id=Material_id).update(Material_Surplus=Material_Suplus)#添加
+            Material_inventory.objects.filter(Material_Id=Material_id).update(Material_Surplus=Material_Suplus)#添加
         except Exception as e:
             success = False
             Data = str(e)
@@ -208,7 +208,7 @@ def addPurchase(request):
 
 def Material_Mgt(request):
     if request.method == "GET":
-        MaterialInfo = Material_Inventory.objects.all()
+        MaterialInfo = material_inventory.objects.all()
         Data = []
         try:
             success = True
@@ -251,37 +251,37 @@ def addActivity(request):
             Warehouse_id = request.POST['Warehouse_id']
             Quantity = filter(str.isdigit, Act_Quantity.encode("utf-8"))
             Qua = int(Quantity)
-            ProductInfo = Product_Inventory.objects.get(Product_Id=Product_id)
+            ProductInfo = product_inventory.objects.get(Product_Id=Product_id)
             Suplus = Qua + ProductInfo.Surplus
-            Product_Inventory.objects.filter(Product_Id=Product_id).update(Surplus=Suplus)  # 添加
-            MaterialInfo = Material_Inventory.objects.get(Material_Id=1)
+            product_inventory.objects.filter(Product_Id=Product_id).update(Surplus=Suplus)  # 添加
+            MaterialInfo = material_inventory.objects.get(Material_Id=1)
             Surmine = MaterialInfo.Material_Surplus-Qua*50
-            Material_Inventory.objects.filter(Material_Id=1).update(Material_Surplus=Surmine)
-            MaterialInfo = Material_Inventory.objects.get(Material_Id=2)
+            material_inventory.objects.filter(Material_Id=1).update(Material_Surplus=Surmine)
+            MaterialInfo = material_inventory.objects.get(Material_Id=2)
             Surmine = MaterialInfo.Material_Surplus-Qua*50
-            Material_Inventory.objects.filter(Material_Id=2).update(Material_Surplus=Surmine)
-            MaterialInfo = Material_Inventory.objects.get(Material_Id=3)
+            material_inventory.objects.filter(Material_Id=2).update(Material_Surplus=Surmine)
+            MaterialInfo = material_inventory.objects.get(Material_Id=3)
             Surmine = MaterialInfo.Material_Surplus-Qua*10
-            Material_Inventory.objects.filter(Material_Id=3).update(Material_Surplus=Surmine)
-            MaterialInfo = Material_Inventory.objects.get(Material_Id=4)
+            material_inventory.objects.filter(Material_Id=3).update(Material_Surplus=Surmine)
+            MaterialInfo = material_inventory.objects.get(Material_Id=4)
             Surmine = MaterialInfo.Material_Surplus-Qua*20
-            Material_Inventory.objects.filter(Material_Id=4).update(Material_Surplus=Surmine)
-            MaterialInfo = Material_Inventory.objects.get(Material_Id=5)
+            material_inventory.objects.filter(Material_Id=4).update(Material_Surplus=Surmine)
+            MaterialInfo = material_inventory.objects.get(Material_Id=5)
             Surmine = MaterialInfo.Material_Surplus-Qua*1
-            Material_Inventory.objects.filter(Material_Id=5).update(Material_Surplus=Surmine)
-            MaterialInfo = Material_Inventory.objects.get(Material_Id=6)
+            material_inventory.objects.filter(Material_Id=5).update(Material_Surplus=Surmine)
+            MaterialInfo = material_inventory.objects.get(Material_Id=6)
             Surmine = MaterialInfo.Material_Surplus-Qua*10
-            Material_Inventory.objects.filter(Material_Id=6).update(Material_Surplus=Surmine)
-            MaterialInfo = Material_Inventory.objects.get(Material_Id=7)
+            material_inventory.objects.filter(Material_Id=6).update(Material_Surplus=Surmine)
+            MaterialInfo = material_inventory.objects.get(Material_Id=7)
             Surmine = MaterialInfo.Material_Surplus-Qua*20
-            Material_Inventory.objects.filter(Material_Id=7).update(Material_Surplus=Surmine)
-            MaterialInfo = Material_Inventory.objects.get(Material_Id=8)
+            material_inventory.objects.filter(Material_Id=7).update(Material_Surplus=Surmine)
+            MaterialInfo = material_inventory.objects.get(Material_Id=8)
             Surmine = MaterialInfo.Material_Surplus-Qua*1
-            Material_Inventory.objects.filter(Material_Id=8).update(Material_Surplus=Surmine)
-            MaterialInfo = Material_Inventory.objects.get(Material_Id=9)
+            material_inventory.objects.filter(Material_Id=8).update(Material_Surplus=Surmine)
+            MaterialInfo = material_inventory.objects.get(Material_Id=9)
             Surmine = MaterialInfo.Material_Surplus-Qua*50
-            Material_Inventory.objects.filter(Material_Id=9).update(Material_Surplus=Surmine)
-            Production_Activity.objects.create(Product_id=Product_id, Act_Date=datetime.datetime.now(),ActResponStaff_id=ActResponStaff_id,Act_Quantity=Act_Quantity,Warehouse_id=Warehouse_id)
+            material_inventory.objects.filter(Material_Id=9).update(Material_Surplus=Surmine)
+            production_activity.objects.create(Product_id=Product_id, Act_Date=datetime.datetime.now(),ActResponStaff_id=ActResponStaff_id,Act_Quantity=Act_Quantity,Warehouse_id=Warehouse_id)
         except Exception as e:
             success = False
             Data = str(e)
@@ -289,7 +289,7 @@ def addActivity(request):
 
 def Activity_Mgt(request):
     if request.method == "GET":
-        ActivityInfo = Production_Activity.objects.all().order_by('-Activity_Id')
+        ActivityInfo = production_activity.objects.all().order_by('-Activity_Id')
         Data = []
         try:
             success = True
@@ -324,7 +324,7 @@ def Activity_Mgt(request):
 
 def Product_Mgt(request):
     if request.method == "GET":
-        ProductInfo = Product_Inventory.objects.all()
+        ProductInfo = product_inventory.objects.all()
         Data = []
         try:
             success = True
@@ -366,10 +366,10 @@ def addOrder(request):
             Product_Case =  request.POST['Product_Case']
             Quantity = filter(str.isdigit, Product_Case.encode("utf-8"))
             Qua = int(Quantity)
-            OrderInfo = Product_Inventory.objects.get(Product_Id=Product_id)
+            OrderInfo = product_inventory.objects.get(Product_Id=Product_id)
             Suplus = OrderInfo.Surplus - Qua
-            Product_Inventory.objects.filter(Product_Id=Product_id).update(Surplus=Suplus)  # 添加
-            Orders.objects.create(Customer_id=Customer_id, Product_id=Product_id,Description=Description,Delivery_Date=Delivery_Date,ResponsibleMan_id=ResponsibleMan_id,Product_Case=Product_Case,Order_Date=datetime.datetime.now())#返回时间和ID
+            product_inventory.objects.filter(Product_Id=Product_id).update(Surplus=Suplus)  # 添加
+            orders.objects.create(Customer_id=Customer_id, Product_id=Product_id,Description=Description,Delivery_Date=Delivery_Date,ResponsibleMan_id=ResponsibleMan_id,Product_Case=Product_Case,Order_Date=datetime.datetime.now())#返回时间和ID
         except Exception as e:
             success = False
             Data = str(e)
@@ -377,7 +377,7 @@ def addOrder(request):
 
 def Order_Mgt(request):
     if request.method == "GET":
-        OrderInfo = Orders.objects.all().order_by('-Order_Id')
+        OrderInfo = orders.objects.all().order_by('-Order_Id')
         Data = []
         try:
             success = True
@@ -419,7 +419,7 @@ def Order_Mgt(request):
 
 def Customer_Mgt(request):
     if request.method == "GET":
-        CustomerInfo = Customers.objects.all()
+        CustomerInfo = customers.objects.all()
         Data = []
         try:
             success = True
@@ -453,7 +453,7 @@ def Customer_Mgt(request):
 
 def Equipment_Mgt(request):
     if request.method == "GET":
-        EquipmentInfo = Equipments.objects.all()
+        EquipmentInfo = equipments.objects.all()
         Data = []
         try:
             success = True
@@ -480,7 +480,7 @@ def Equipment_Mgt(request):
 
 def Maintenances_Mgt(request):
     if request.method == "GET":
-        MaintenanceInfo = Maintenances.objects.all()
+        MaintenanceInfo = maintenances.objects.all()
         Data = []
         try:
             success = True
@@ -512,7 +512,7 @@ def Maintenances_Mgt(request):
 
 def Warehouse_Mgt(request):
     if request.method == "GET":
-        WarehouseInfo = Warehouse.objects.all()
+        WarehouseInfo = warehouse.objects.all()
         Data = []
         try:
             success = True
@@ -542,7 +542,7 @@ def Warehouse_Mgt(request):
 
 def Labor_Mgt(request):
     if request.method == "GET":
-        StaffInfo = Staff.objects.all()
+        StaffInfo = staff.objects.all()
         Data = []
         try:
             success = True
@@ -572,7 +572,7 @@ def Labor_Mgt(request):
 
 def Main_Mgt(request):
     if request.method == "GET":
-        MainInfo = Maintenances.objects.all().order_by('-Mainten_Id')
+        MainInfo = maintenances.objects.all().order_by('-Mainten_Id')
         Data = []
         try:
             success = True
@@ -610,7 +610,7 @@ def addMaintenance(request):
             Equipmentid =  request.POST['Equipmentid']
             Description =  request.POST['Description']
             MaintenStaffid =  request.POST['MaintenStaffid']
-            Maintenances.objects.create(Mainten_Date=datetime.datetime.now(),Equip_id=Equipmentid, Deprecation=Description,MaintenStaff_id=MaintenStaffid)
+            maintenances.objects.create(Mainten_Date=datetime.datetime.now(),Equip_id=Equipmentid, Deprecation=Description,MaintenStaff_id=MaintenStaffid)
         except Exception as e:
             success = False
             Data = str(e)
@@ -637,7 +637,7 @@ def getSupplier(request):
                 search_dict['Liaison_Number'] = Liaison_Number
             if Liaison_Name:
                 search_dict['Liaison_Name'] = Liaison_Name
-            Info = Suppliers.objects.filter(**search_dict)
+            Info = suppliers.objects.filter(**search_dict)
             if Info:
                 if isinstance(Info, Iterable) == True:
                     for Supplier in Info:
@@ -683,7 +683,7 @@ def getPurchase(request):
                 search_dict['Supplier_id'] = Supplier_id
             if Supplier_id:
                 search_dict['Supplier_id'] = Supplier_id
-            Info = Procurement.objects.filter(**search_dict)
+            Info = procurement.objects.filter(**search_dict)
             if Info:
                 if isinstance(Info, Iterable) == True:
                     for Purchase in Info:
@@ -730,7 +730,7 @@ def getMaterial(request):
                 search_dict['Material_Category'] = Material_Category
             if Warehouse_id:
                 search_dict['Warehouse_id'] = Warehouse_id
-            Info = Material_Inventory.objects.filter(**search_dict)
+            Info = material_inventory.objects.filter(**search_dict)
             if Info:
                 if isinstance(Info, Iterable) == True:
                     for Material in Info:
@@ -775,7 +775,7 @@ def getActivity(request):
                 search_dict['Product_id'] = Product_id
             if ActResponStaff_id:
                 search_dict['ActResponStaff_id'] = ActResponStaff_id
-            Info = Production_Activity.objects.filter(**search_dict)
+            Info = production_activity.objects.filter(**search_dict)
             if Info:
                 if isinstance(Info, Iterable) == True:
                     for Activity in Info:
@@ -821,7 +821,7 @@ def getOrder(request):
                 search_dict['Product_id'] = Product_id
             if ResponsibleMan_id:
                 search_dict['ResponsibleMan_id'] = ResponsibleMan_id
-            Info = Orders.objects.filter(**search_dict)
+            Info = orders.objects.filter(**search_dict)
             if Info:
                 if isinstance(Info, Iterable) == True:
                     for Order in Info:
@@ -874,7 +874,7 @@ def getCustomer(request):
                 search_dict['Customer_Category'] = Customer_Category
             if PhoneNum:
                 search_dict['PhoneNum'] = PhoneNum
-            Info = Customers.objects.filter(**search_dict)
+            Info = customers.objects.filter(**search_dict)
             if Info:
                 if isinstance(Info, Iterable) == True:
                     for Customer in Info:
@@ -917,7 +917,7 @@ def getMaintenance(request):
                 search_dict['MaintenStaff_id'] = MaintenStaff_id
             if Equip_id:
                 search_dict['Equip_id'] = Equip_id
-            Info = Maintenances.objects.filter(**search_dict)
+            Info = maintenances.objects.filter(**search_dict)
             if Info:
                 if isinstance(Info, Iterable) == True:
                     for House in Info:
@@ -954,7 +954,7 @@ def getEquipment(request):
                 search_dict['Equip_Name'] = Equip_Name
             if Warehouse_id:
                 search_dict['Warehouse_id'] = Warehouse_id
-            Info = Equipments.objects.filter(**search_dict)
+            Info = equipments.objects.filter(**search_dict)
             if Info:
                 if isinstance(Info, Iterable) == True:
                     for Equipment in Info:
@@ -992,7 +992,7 @@ def getWarehouse(request):
                 search_dict['Warehouse_Location'] = Warehouse_Location
             if PeopleInCharge_id:
                 search_dict['PeopleInCharge_id'] = PeopleInCharge_id
-            Info = Warehouse.objects.filter(**search_dict)
+            Info = warehouse.objects.filter(**search_dict)
             if Info:
                 if isinstance(Info, Iterable) == True:
                     for House in Info:
@@ -1033,7 +1033,7 @@ def getLabor(request):
                 search_dict['Department'] = Department
             if Staff_Gender:
                 search_dict['Staff_Gender'] = Staff_Gender
-            Info = Staff.objects.filter(**search_dict)
+            Info = staff.objects.filter(**search_dict)
             if Info:
                 if isinstance(Info, Iterable) == True:
                     for Labor in Info:
@@ -1058,21 +1058,21 @@ def getLabor(request):
 
 def getDashboard(request):
     if request.method == "GET":
-        SupplierNum = Suppliers.objects.all().__len__()
-        MaterialNum = Material_Inventory.objects.all().__len__()
-        ProductNum = Product_Inventory.objects.all().__len__()
-        OrderNum = Orders.objects.all().__len__()
-        WarehouseNum = Warehouse.objects.all().__len__()
-        ActivityNum = Production_Activity.objects.all().__len__()
-        MaterialInfo = Material_Inventory.objects.all()
+        SupplierNum = suppliers.objects.all().__len__()
+        MaterialNum = material_inventory.objects.all().__len__()
+        ProductNum = product_inventory.objects.all().__len__()
+        OrderNum = orders.objects.all().__len__()
+        WarehouseNum = warehouse.objects.all().__len__()
+        ActivityNum = production_activity.objects.all().__len__()
+        MaterialInfo = material_inventory.objects.all()
         SurplusList = []
         for Material in MaterialInfo:
             Surplus = Material.Material_Surplus
             SurplusList.append(Surplus)
-        OrderInfo1 = Orders.objects.filter(Product_id=1)
-        OrderInfo2 = Orders.objects.filter(Product_id=2)
-        OrderInfo3 = Orders.objects.filter(Product_id=3)
-        OrderInfo4 = Orders.objects.filter(Product_id=4)
+        OrderInfo1 = orders.objects.filter(Product_id=1)
+        OrderInfo2 = orders.objects.filter(Product_id=2)
+        OrderInfo3 = orders.objects.filter(Product_id=3)
+        OrderInfo4 = orders.objects.filter(Product_id=4)
         if OrderInfo1:
             Count = 0
             if isinstance(OrderInfo1, Iterable) == True:
