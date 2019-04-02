@@ -2,7 +2,7 @@
 from django.shortcuts import render
 
 # Create your views here.
-from beer.models import *
+from Beer.models import *
 from django.http import JsonResponse,HttpResponse
 import hashlib
 import os
